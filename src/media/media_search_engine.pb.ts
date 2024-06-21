@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v1.180.0
 //   protoc               v5.27.1
-// source: media_library_service.proto
+// source: media_search_engine.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
@@ -30,29 +30,29 @@ export interface Movie {
 
 export const MEDIA_PACKAGE_NAME = "media";
 
-export interface MediaLibraryServiceClient {
+export interface MediaSearchEngineClient {
   searchMovieByName(request: SearchMovieByNameRequest): Observable<SearchMovieByNameResponse>;
 }
 
-export interface MediaLibraryServiceController {
+export interface MediaSearchEngineController {
   searchMovieByName(
     request: SearchMovieByNameRequest,
   ): Promise<SearchMovieByNameResponse> | Observable<SearchMovieByNameResponse> | SearchMovieByNameResponse;
 }
 
-export function MediaLibraryServiceControllerMethods() {
+export function MediaSearchEngineControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = ["searchMovieByName"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("MediaLibraryService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("MediaSearchEngine", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("MediaLibraryService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("MediaSearchEngine", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const MEDIA_LIBRARY_SERVICE_NAME = "MediaLibraryService";
+export const MEDIA_SEARCH_ENGINE_SERVICE_NAME = "MediaSearchEngine";

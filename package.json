@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "npm i git+https://github.com/WatchListProject/protos.git",
-    "proto:media": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/media node_modules/protos/media_library_service.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:media": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/media node_modules/protos/media_search_engine.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:all": "npm run proto:install && npm run proto:media"
   },
   "dependencies": {

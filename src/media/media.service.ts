@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Movie, SearchMovieByNameRequest } from './media_library_service.pb';
+import { Movie, SearchMovieByNameRequest } from './media_search_engine.pb';
 
 @Injectable()
 export class MovieService {
