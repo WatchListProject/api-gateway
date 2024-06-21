@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MovieService } from './movie/movie.service';
-import { Movie, SearchMovieByNameRequest } from './movie/movie.pb';
+import { MovieService } from './media/media.service';
+import { Movie, SearchMovieByNameRequest } from './media/media_library_service.pb';
 
 @Controller()
 export class AppController {

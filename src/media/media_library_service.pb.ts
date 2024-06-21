@@ -2,13 +2,13 @@
 // versions:
 //   protoc-gen-ts_proto  v1.180.0
 //   protoc               v5.27.1
-// source: movie.proto
+// source: media_library_service.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
 
-export const protobufPackage = "movie";
+export const protobufPackage = "media";
 
 export interface SearchMovieByNameRequest {
   name: string;
@@ -28,31 +28,31 @@ export interface Movie {
   popularity: number;
 }
 
-export const MOVIE_PACKAGE_NAME = "movie";
+export const MEDIA_PACKAGE_NAME = "media";
 
-export interface MovieServiceClient {
+export interface MediaLibraryServiceClient {
   searchMovieByName(request: SearchMovieByNameRequest): Observable<SearchMovieByNameResponse>;
 }
 
-export interface MovieServiceController {
+export interface MediaLibraryServiceController {
   searchMovieByName(
     request: SearchMovieByNameRequest,
   ): Promise<SearchMovieByNameResponse> | Observable<SearchMovieByNameResponse> | SearchMovieByNameResponse;
 }
 
-export function MovieServiceControllerMethods() {
+export function MediaLibraryServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = ["searchMovieByName"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("MovieService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("MediaLibraryService", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("MovieService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("MediaLibraryService", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const MOVIE_SERVICE_NAME = "MovieService";
+export const MEDIA_LIBRARY_SERVICE_NAME = "MediaLibraryService";

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Movie, SearchMovieByNameRequest } from './movie.pb';
+import { Movie, SearchMovieByNameRequest } from './media_library_service.pb';
 
 @Injectable()
 export class MovieService {
@@ -9,7 +9,7 @@ export class MovieService {
 
 
     getMovie(): string {
-        return 'Movie service works';
+        return 'Media service works';
     }
 
 }
