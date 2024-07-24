@@ -15,7 +15,15 @@ export interface SearchMovieByNameRequest {
 }
 
 export interface SearchMovieByNameResponse {
-  movie: Movie[];
+  moviesList: Movie[];
+}
+
+export interface SearchSerieByNameRequest {
+  name: string;
+}
+
+export interface SearchSerieByNameResponse {
+  seriesList: Serie[];
 }
 
 export interface Movie {
@@ -28,21 +36,40 @@ export interface Movie {
   popularity: number;
 }
 
+export interface Serie {
+  id: string;
+  title: string;
+  overview: string;
+  startDate: string;
+  endDate: string;
+  runTime: number;
+  numberOfEpisodes: number;
+  posterPath: string;
+  backdropPath: string;
+  popularity: number;
+}
+
 export const MEDIA_PACKAGE_NAME = "media";
 
 export interface MediaSearchEngineClient {
   searchMovieByName(request: SearchMovieByNameRequest): Observable<SearchMovieByNameResponse>;
+
+  searchSerieByName(request: SearchSerieByNameRequest): Observable<SearchSerieByNameResponse>;
 }
 
 export interface MediaSearchEngineController {
   searchMovieByName(
     request: SearchMovieByNameRequest,
   ): Promise<SearchMovieByNameResponse> | Observable<SearchMovieByNameResponse> | SearchMovieByNameResponse;
+
+  searchSerieByName(
+    request: SearchSerieByNameRequest,
+  ): Promise<SearchSerieByNameResponse> | Observable<SearchSerieByNameResponse> | SearchSerieByNameResponse;
 }
 
 export function MediaSearchEngineControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["searchMovieByName"];
+    const grpcMethods: string[] = ["searchMovieByName", "searchSerieByName"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("MediaSearchEngine", method)(constructor.prototype[method], method, descriptor);

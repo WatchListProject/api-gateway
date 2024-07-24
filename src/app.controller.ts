@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MediaService } from './media/media.service';
-import { SearchMovieByNameRequest, SearchMovieByNameResponse } from './media/media_search_engine.pb';
+import { SearchMovieByNameRequest, SearchMovieByNameResponse, SearchSerieByNameRequest, SearchSerieByNameResponse } from './media/media_search_engine.pb';
 import { Observable } from 'rxjs';
 
 @Controller()
@@ -21,10 +21,16 @@ export class AppController {
     return this.mediaService.getMovie();
   }
 
-  @Get('search')
+  @Get('search_movie')
   searchMovie(@Query('name') name: string): Observable<SearchMovieByNameResponse> {
     const request: SearchMovieByNameRequest = { name };
     return this.mediaService.searchMovieByName(request);
+  }
+
+  @Get('search_serie')
+  searchSeries(@Query('name') name: string): Observable<SearchSerieByNameResponse> {
+    const request: SearchSerieByNameRequest = { name };
+    return this.mediaService.searchSerieByName(request);
   }
 
 }
