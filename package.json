@@ -20,13 +20,15 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "npm i git+https://github.com/WatchListProject/protos.git",
     "proto:media": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/media node_modules/protos/media_search_engine.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
-    "proto:all": "npm run proto:install && npm run proto:media"
+    "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/auth node_modules/protos/auth_service.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:all": "npm run proto:install && npm run proto:media && npm run proto:auth"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/microservices": "^10.3.9",
     "@nestjs/platform-express": "^10.0.0",
+    "jsonwebtoken": "^9.0.2",
     "protos": "github:WatchListProject/protos",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
