@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class MediaService {
   private mediaService: MediaSearchEngineClient;
-
   constructor(@Inject('MEDIA_PACKAGE') private client: ClientGrpc) { }
 
   onModuleInit() {

@@ -6,7 +6,6 @@ import { ClientGrpc } from '@nestjs/microservices';
 @Injectable()
 export class AuthService implements AuthServiceController {
     private authService: AuthServiceClient;
-
     constructor(@Inject('AUTH_PACKAGE') private client: ClientGrpc) { }
 
     onModuleInit() {

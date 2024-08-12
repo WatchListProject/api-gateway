@@ -7,6 +7,8 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from './auth/auth_service.pb';
 import * as jwt from 'jsonwebtoken';
+import { UserMediaService } from './user_media/user_media.service';
+import { GetUserMediaListRequest } from './user_media/user_media_service.pb';
 
 @Controller()
 export class AppController {
@@ -14,7 +16,8 @@ export class AppController {
     private readonly appService: AppService,
     private readonly mediaService: MediaService,
     private readonly authService: AuthService,
-  ) {}
+    private readonly userMediaService: UserMediaService,
+  ) { }
 
   @Get()
   getHello(): string {
@@ -93,4 +96,33 @@ export class AppController {
       })
     );
   }
+
+  @Get('/user_media')
+  @UseGuards(AuthGuard)
+  getUserMedia(@Headers('authorization') authHeader: string): Observable<any> {
+    const token = authHeader.replace('Bearer ', '');
+    const decodedToken = jwt.decode(token) as jwt.JwtPayload;
+
+    return this.userMediaService.getUserMediaList({ userId: decodedToken.userId }).pipe(
+      catchError((error) => {
+        // Devuelve una respuesta HTTP adecuada
+        throw new HttpException(`Error getting user media: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      })
+    );
+  }
+
+  @Post('/user_media')
+  @UseGuards(AuthGuard)
+  addMediaToUser(@Headers('authorization') authHeader: string, @Body('mediaId') mediaId: string, @Body('mediaType') mediaType: string): Observable<any> {
+    const token = authHeader.replace('Bearer ', '');
+    const decodedToken = jwt.decode(token) as jwt.JwtPayload;
+
+    return this.userMediaService.addMediaToUser({ userId: decodedToken.userId, mediaId: mediaId, mediaType: mediaType }).pipe(
+      catchError((error) => {
+        // Devuelve una respuesta HTTP adecuada
+        throw new HttpException(`Error adding media to user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      })
+    );
+  }
+
 }

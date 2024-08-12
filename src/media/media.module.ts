@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MediaService } from './media.service';
-import { MediaController } from './media.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
@@ -19,7 +18,7 @@ import { join } from 'path';
     ]),
   ],
   providers: [MediaService],
-  controllers: [MediaController],
+  controllers: [],
   exports: [MediaService], 
 })
 export class MediaModule {}
