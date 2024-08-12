@@ -1,8 +1,9 @@
 // src/media/media.service.ts
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { MediaSearchEngineClient, SearchMovieByNameRequest, SearchMovieByNameResponse, Movie, SearchSerieByNameRequest } from './media_search_engine.pb';
+import { MediaSearchEngineClient, SearchMovieByNameRequest, SearchMovieByNameResponse, Movie, SearchSerieByNameRequest, GetMediaByIdResponse, GetMediaByIdRequest, SearchSerieByNameResponse } from './media_search_engine.pb';
 import { Observable } from 'rxjs';
+import * as request from 'supertest';
 
 @Injectable()
 export class MediaService {
@@ -17,8 +18,13 @@ export class MediaService {
     return this.mediaService.searchMovieByName(request);
   }
 
-  searchSerieByName(request: SearchSerieByNameRequest): Observable<import("./media_search_engine.pb").SearchSerieByNameResponse> {
+  searchSerieByName(request: SearchSerieByNameRequest): Observable<SearchSerieByNameResponse> {
     return this.mediaService.searchSerieByName(request);
+  }
+
+  getMediaById(request: GetMediaByIdRequest): Observable<GetMediaByIdResponse>{
+    console.log(request);
+    return this.mediaService.getMediaById(request);
   }
 
   getMovie(): string {
