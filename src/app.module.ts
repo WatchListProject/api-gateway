@@ -10,7 +10,7 @@ import { UserMediaModule } from './user_media/user_media.module';
   imports: [
     AuthModule,
     MediaModule,
-    UserMediaModule
+    UserMediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

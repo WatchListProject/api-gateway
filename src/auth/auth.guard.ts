@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException('Invalid token');
       }),
       catchError((error) => {
-        throw new HttpException(`Error authentication: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException(`Error authentication: ${error.message}`, HttpStatus.UNAUTHORIZED);
       })
     );
   }
