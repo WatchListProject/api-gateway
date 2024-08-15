@@ -22,7 +22,8 @@
     "proto:media": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/media node_modules/protos/media_search_engine.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/auth node_modules/protos/auth_service.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:user_media": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/user_media node_modules/protos/user_media_service.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
-    "proto:all": "npm run proto:install && npm run proto:media && npm run proto:auth && npm run proto:user_media"
+    "proto:ai": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/protos --ts_proto_out=src/ai node_modules/protos/ai_service.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:all": "npm run proto:install && npm run proto:media && npm run proto:auth && npm run proto:user_media && npm run proto:ai"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

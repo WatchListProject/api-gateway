@@ -23,7 +23,6 @@ export class MediaService {
   }
 
   getMediaById(request: GetMediaByIdRequest): Observable<GetMediaByIdResponse>{
-    console.log(request);
     return this.mediaService.getMediaById(request);
   }
 

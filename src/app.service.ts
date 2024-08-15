@@ -5,13 +5,17 @@ import * as jwt from 'jsonwebtoken';
 import { GetUserMediaListResponse } from './user_media/user_media_service.pb';
 import { MediaService } from './media/media.service';
 import { UserMediaService } from './user_media/user_media.service';
+import { AiService } from './ai/ai.service';
+import { MediaRecommendationRequest } from './ai/ai_service.pb';
 
 @Injectable()
 export class AppService {
   constructor(
     private readonly userMediaService: UserMediaService,
     private readonly mediaService: MediaService,
-  ) {}
+    private readonly aiService: AiService,
+
+  ) { }
 
   getUserMedia(authHeader: string): Observable<any> {
     const token = authHeader.replace('Bearer ', '');
@@ -66,4 +70,26 @@ export class AppService {
       })
     );
   }
+
+  getRecommendations(authHeader: string): Observable<any> {
+    return this.getUserMedia(authHeader).pipe(
+      switchMap((userMedia) => {
+        const mediaListForAI = userMedia.map((media) => ({
+          title: media.title,
+          mediaType: media.mediaType,
+        }));
+  
+        return this.aiService.mediaRecommendation({ mediaList: mediaListForAI });
+      }),
+      catchError((error) => {
+        throw new HttpException(
+          `Error fetching user media: ${error.message}`,
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
+      })
+    );
+  }
+  
+
+
 }

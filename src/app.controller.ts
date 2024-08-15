@@ -203,4 +203,13 @@ export class AppController {
     );
   }
 
+  @Get('/user_media/recomendations')
+  @UseGuards(AuthGuard)
+  getRecommendations(@Headers('authorization') authHeader: string): Observable<any> {
+    const token = authHeader.replace('Bearer ', '');
+    const decodedToken = jwt.decode(token) as jwt.JwtPayload;
+
+    return this.appService.getRecommendations(authHeader);
+  }
+
 }
