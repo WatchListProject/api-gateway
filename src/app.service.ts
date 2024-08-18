@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import * as jwt from 'jsonwebtoken';
 import { GetUserMediaListResponse } from './user_media/user_media_service.pb';
 import { MediaService } from './media/media.service';
@@ -78,8 +78,10 @@ export class AppService {
           title: media.title,
           mediaType: media.mediaType,
         }));
-  
-        return this.aiService.mediaRecommendation({ mediaList: mediaListForAI });
+        return this.aiService.mediaRecommendation({ mediaList: mediaListForAI }).pipe(
+          tap((recommendations) => console.log(recommendations.recommendation)) // Aquí te suscribes temporalmente para ver los datos
+          
+        );
       }),
       catchError((error) => {
         throw new HttpException(
@@ -89,6 +91,7 @@ export class AppService {
       })
     );
   }
+  
   
 
 

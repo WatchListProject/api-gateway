@@ -6,9 +6,13 @@ import { AuthModule } from './auth/auth.module';
 import { MediaModule } from './media/media.module';
 import { UserMediaModule } from './user_media/user_media.module';
 import { AiModule } from './ai/ai.module';
+import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Hace que el ConfigModule esté disponible en toda la aplicación sin necesidad de importarlo en otros módulos.
+    }),
     AuthModule,
     MediaModule,
     UserMediaModule,

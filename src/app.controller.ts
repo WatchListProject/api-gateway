@@ -11,6 +11,7 @@ import { UserMediaService } from './user_media/user_media.service';
 import { DeleteMediaFromUserResponse, GetUserMediaListResponse } from './user_media/user_media_service.pb';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiQuery } from '@nestjs/swagger';
 
 
 
@@ -79,24 +80,11 @@ export class AppController {
     private readonly userMediaService: UserMediaService,
   ) { }
 
-  @Get('movie_test')
-  getTest(): string {
-    return this.mediaService.getMovie();
-  }
+
 
   @Get('search_movie')
-  @UseGuards(AuthGuard)
-  searchMovie(@Query('name') name: string, @Headers('authorization') authHeader: string): Observable<SearchMovieByNameResponse> {
-
-    const token = authHeader.replace('Bearer ', '');
-    const decodedToken = jwt.decode(token) as jwt.JwtPayload;
-
-    // Acceder al expiration time (exp) y loguearlo
-    if (decodedToken && decodedToken.exp) {
-      const expirationTime = new Date(decodedToken.exp * 1000);
-      console.log(`Token expiration time: ${expirationTime}`);
-    }
-
+  @ApiQuery({ name: 'name', required: true, description: 'Name of the movie to search' })
+  searchMovie(@Query('name') name: string): Observable<SearchMovieByNameResponse> {
     const request: SearchMovieByNameRequest = { name };
     return this.mediaService.searchMovieByName(request).pipe(
       catchError((error) => {
@@ -107,7 +95,7 @@ export class AppController {
   }
 
   @Get('search_serie')
-  @UseGuards(AuthGuard)
+  @ApiQuery({ name: 'name', required: true, description: 'Name of the series to search' })
   searchSeries(@Query('name') name: string): Observable<SearchSerieByNameResponse> {
     const request: SearchSerieByNameRequest = { name };
     return this.mediaService.searchSerieByName(request).pipe(
@@ -119,6 +107,24 @@ export class AppController {
   }
 
   @Post('login')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { 
+          type: 'string', 
+          description: 'User email',
+          example: 'Hello@gmail.com'
+        },
+        password: { 
+          type: 'string', 
+          description: 'User password',
+          example: 'Hello',
+        },
+      },
+      required: ['email', 'password'],
+    },
+  })
   login(@Body('email') email: string, @Body('password') password: string): Observable<LoginResponse> {
     const request: LoginRequest = { email, password };
     return this.authService.login(request).pipe(
@@ -139,6 +145,30 @@ export class AppController {
   }
 
   @Post('register')
+  @ApiBody({
+    description: 'User registration',
+    schema: {
+      type: 'object',
+      properties: {
+        email: { 
+          type: 'string', 
+          description: 'User email',
+          example: 'Hello@gmail.com'
+        },
+        password: { 
+          type: 'string', 
+          description: 'User password',
+          example: 'Hello',
+        },
+        repeatedPassword: { 
+          type: 'string', 
+          description: 'Confirm user password',
+          example: 'Hello', 
+        },
+      },
+      required: ['email', 'password', 'repeatedPassword'],
+    },
+  })
   register(@Body('email') email: string, @Body('password') password: string, @Body('repeatedPassword') repeatedPassword: string): Observable<RegisterResponse> {
     const request: RegisterRequest = { email, password, repeatedPassword };
     return this.authService.register(request).pipe(
@@ -155,14 +185,52 @@ export class AppController {
     );
   }
 
+
   @Get('/user_media')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Put the token on the lock symbol',
+    required: false,
+    schema: {
+      default: ' ', 
+    },
+  })
   getUserMedia(@Headers('authorization') authHeader: string): Observable<any> {
     return this.appService.getUserMedia(authHeader);
   }
 
   @Post('/user_media')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Put the token on the lock symbol',
+    required: false,
+    schema: {
+      default: ' ', 
+    },
+  })
+  @ApiBody({
+    description: 'Add media to the user list',
+    schema: {
+      type: 'object',
+      properties: {
+        mediaId: { 
+          type: 'string', 
+          description: 'Media Id',
+          example: '134134134'
+        },
+        mediaType: { 
+          type: 'string', 
+          description: 'Media type: "MOVIE" or "SERIE"',
+          example: 'MOVIE',
+        },
+      },
+      required: ['mediaId', 'mediaType'],
+    },
+  })
   addMediaToUser(@Headers('authorization') authHeader: string, @Body('mediaId') mediaId: string, @Body('mediaType') mediaType: string): Observable<any> {
     const token = authHeader.replace('Bearer ', '');
     const decodedToken = jwt.decode(token) as jwt.JwtPayload;
@@ -177,6 +245,34 @@ export class AppController {
 
   @Patch('/user_media')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Put the token on the lock symbol',
+    required: false,
+    schema: {
+      default: ' ', 
+    },
+  })
+  @ApiBody({
+    description: 'Set the seen status of one media from the user media list',
+    schema: {
+      type: 'object',
+      properties: {
+        mediaId: { 
+          type: 'string', 
+          description: 'Media Id',
+          example: '134134134'
+        },
+        seenStatus: { 
+          type: 'boolean', 
+          description: 'Seen status: true or false',
+          example: true
+        },
+      },
+      required: ['mediaId', 'seenStatus'],
+    },
+  })
   setSeenStatus(@Headers('authorization') authHeader: string, @Body('mediaId') mediaId: string, @Body('seenStatus') seenStatus: boolean): Observable<DeleteMediaFromUserResponse> {
     const token = authHeader.replace('Bearer ', '');
     const decodedToken = jwt.decode(token) as jwt.JwtPayload;
@@ -191,6 +287,29 @@ export class AppController {
 
   @Delete('/user_media')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Put the token on the lock symbol',
+    required: false,
+    schema: {
+      default: ' ', 
+    },
+  })
+  @ApiBody({
+    description: 'Delete media from the user media list',
+    schema: {
+      type: 'object',
+      properties: {
+        mediaId: { 
+          type: 'string', 
+          description: 'Media Id',
+          example: '134134134'
+        },
+      },
+      required: ['mediaId'],
+    },
+  })
   deleteMediaFromUser(@Headers('authorization') authHeader: string, @Body('mediaId') mediaId: string): Observable<DeleteMediaFromUserResponse> {
     const token = authHeader.replace('Bearer ', '');
     const decodedToken = jwt.decode(token) as jwt.JwtPayload;
@@ -205,10 +324,16 @@ export class AppController {
 
   @Get('/user_media/recomendations')
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'Put the token on the lock symbol',
+    required: false,
+    schema: {
+      default: ' ', 
+    },
+  })
   getRecommendations(@Headers('authorization') authHeader: string): Observable<any> {
-    const token = authHeader.replace('Bearer ', '');
-    const decodedToken = jwt.decode(token) as jwt.JwtPayload;
-
     return this.appService.getRecommendations(authHeader);
   }
 
