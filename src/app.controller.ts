@@ -11,7 +11,7 @@ import { UserMediaService } from './user_media/user_media.service';
 import { DeleteMediaFromUserResponse, GetUserMediaListResponse } from './user_media/user_media_service.pb';
 import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
-import { ApiBearerAuth, ApiBody, ApiHeader, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 
 
@@ -70,7 +70,7 @@ function grpcToHttpException(grpcStatus: number): void {
   }
 }
 
-
+@ApiTags('AppController')
 @Controller()
 export class AppController {
   constructor(
@@ -81,7 +81,7 @@ export class AppController {
   ) { }
 
 
-
+ 
   @Get('search_movie')
   @ApiQuery({ name: 'name', required: true, description: 'Name of the movie to search' })
   searchMovie(@Query('name') name: string): Observable<SearchMovieByNameResponse> {
