@@ -70,7 +70,7 @@ function grpcToHttpException(grpcStatus: number): void {
   }
 }
 
-@ApiTags('AppController')
+@ApiTags('app.controller')
 @Controller()
 export class AppController {
   constructor(
