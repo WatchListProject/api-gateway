@@ -2,14 +2,13 @@ import { Body, Controller, Get, Post, Query, UseGuards, HttpException, HttpStatu
 import { AppService } from './app.service';
 import { MediaService } from './media/media.service';
 import { SearchMovieByNameRequest, SearchMovieByNameResponse, SearchSerieByNameRequest, SearchSerieByNameResponse } from './media/media_search_engine.pb';
-import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from './auth/auth_service.pb';
 import * as jwt from 'jsonwebtoken';
 import { UserMediaService } from './user_media/user_media.service';
 import { DeleteMediaFromUserResponse, GetUserMediaListResponse } from './user_media/user_media_service.pb';
-import { RpcException } from '@nestjs/microservices';
 import { status } from '@grpc/grpc-js';
 import { ApiBearerAuth, ApiBody, ApiHeader, ApiQuery, ApiTags } from '@nestjs/swagger';
 
@@ -70,6 +69,7 @@ function grpcToHttpException(grpcStatus: number): void {
   }
 }
 
+
 @ApiTags('app.controller')
 @Controller()
 export class AppController {
@@ -81,6 +81,11 @@ export class AppController {
   ) { }
 
 
+
+  @Get("test")
+  test(): string {
+    return "test";
+  }
  
   @Get('search_movie')
   @ApiQuery({ name: 'name', required: true, description: 'Name of the movie to search' })
