@@ -43,27 +43,40 @@ export class AppService {
       map(({ mediaList, mediaDetails }) => {
         return mediaDetails.map((details, index) => {
           const originalMedia = mediaList[index];
-
+      
+          // Convertimos el string `addedAt` a un objeto Date
+          const addedAtDate = new Date(originalMedia.addedAt);
+      
+          // Formateamos la fecha al estilo dd/mm/yyyy hora
+          const formattedAddedAt = `${addedAtDate.getDate().toString().padStart(2, '0')}/${
+            (addedAtDate.getMonth() + 1).toString().padStart(2, '0')}/${
+            addedAtDate.getFullYear()} ${
+            addedAtDate.getHours().toString().padStart(2, '0')}:${
+            addedAtDate.getMinutes().toString().padStart(2, '0')}`;
+      
           // Verifica si el resultado contiene un error
           if ('error' in details) {
             return {
               mediaId: originalMedia.mediaId,
               mediaType: originalMedia.mediaType,
               seen: originalMedia.seenStatus,
+              addedAt: formattedAddedAt, // Usa la fecha formateada
               error: details.error,
             };
           }
-
+      
           // Combina los detalles de la película o serie con los datos originales
           return {
             mediaId: originalMedia.mediaId,
             mediaType: originalMedia.mediaType,
             seen: originalMedia.seenStatus,
+            addedAt: formattedAddedAt, // Usa la fecha formateada
             ...details.movie, // Agrega los detalles si es una película
             ...details.serie, // Agrega los detalles si es una serie
           };
         });
       }),
+      
       // Controla cualquier error general que pueda ocurrir en todo el proceso
       catchError((error) => {
         throw new HttpException(`Error getting user media: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -80,7 +93,7 @@ export class AppService {
         }));
         return this.aiService.mediaRecommendation({ mediaList: mediaListForAI }).pipe(
           tap((recommendations) => console.log(recommendations.recommendation)) // Aquí te suscribes temporalmente para ver los datos
-          
+
         );
       }),
       catchError((error) => {
@@ -91,8 +104,8 @@ export class AppService {
       })
     );
   }
-  
-  
+
+
 
 
 }
