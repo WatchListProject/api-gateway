@@ -240,7 +240,7 @@ export class AppController {
     const token = authHeader.replace('Bearer ', '');
     const decodedToken = jwt.decode(token) as jwt.JwtPayload;
 
-    return this.userMediaService.addMediaToUser({ userId: decodedToken.userId, mediaId: mediaId, mediaType: mediaType }).pipe(
+    return this.userMediaService.addMediaToUser({ email: decodedToken.email, mediaId: mediaId, mediaType: mediaType }).pipe(
       catchError((error) => {
         // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error adding media to user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -282,7 +282,7 @@ export class AppController {
     const token = authHeader.replace('Bearer ', '');
     const decodedToken = jwt.decode(token) as jwt.JwtPayload;
 
-    return this.userMediaService.setSeenStatus({ userId: decodedToken.userId, mediaId: mediaId, seenStatus: seenStatus }).pipe(
+    return this.userMediaService.setSeenStatus({ email: decodedToken.email, mediaId: mediaId, seenStatus: seenStatus }).pipe(
       catchError((error) => {
         // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error setting media seen status: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -319,7 +319,7 @@ export class AppController {
     const token = authHeader.replace('Bearer ', '');
     const decodedToken = jwt.decode(token) as jwt.JwtPayload;
 
-    return this.userMediaService.deleteMediaFromUser({ userId: decodedToken.userId, mediaId: mediaId }).pipe(
+    return this.userMediaService.deleteMediaFromUser({ email: decodedToken.email, mediaId: mediaId }).pipe(
       catchError((error) => {
         // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error deleting media: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
