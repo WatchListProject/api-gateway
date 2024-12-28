@@ -19,7 +19,7 @@ const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL;
           package: 'auth',
           protoPath: join(__dirname, '../../node_modules/protos/auth_service.proto'),
           url: AUTH_SERVICE_URL,
-          // credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP, quitar para local
+          credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP, quitar para local
         },
       },
     ]),

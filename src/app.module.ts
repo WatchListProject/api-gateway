@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Hace que el ConfigModule esté disponible en toda la aplicación sin necesidad de importarlo en otros módulos.
+      isGlobal: true, 
     }),
     AuthModule,
     MediaModule,

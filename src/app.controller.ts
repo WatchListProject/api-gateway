@@ -93,7 +93,6 @@ export class AppController {
     const request: SearchMovieByNameRequest = { name };
     return this.mediaService.searchMovieByName(request).pipe(
       catchError((error) => {
-        // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error searching movie: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
       })
     );
@@ -105,7 +104,6 @@ export class AppController {
     const request: SearchSerieByNameRequest = { name };
     return this.mediaService.searchSerieByName(request).pipe(
       catchError((error) => {
-        // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error searching series: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
       })
     );
@@ -141,9 +139,9 @@ export class AppController {
       }),
       catchError((error) => {
         if (error.code) {
-          grpcToHttpException(error.code); // Lanza la excepción HTTP correspondiente
+          grpcToHttpException(error.code); 
         }
-        throw error; // Lanza la excepción original si no es un RpcException
+        throw error; 
       })
       
     );
@@ -184,7 +182,6 @@ export class AppController {
         return response;
       }),
       catchError((error) => {
-        // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error during registration: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
       })
     );
@@ -242,7 +239,6 @@ export class AppController {
 
     return this.userMediaService.addMediaToUser({ email: decodedToken.email, mediaId: mediaId, mediaType: mediaType }).pipe(
       catchError((error) => {
-        // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error adding media to user: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
       })
     );
@@ -284,7 +280,6 @@ export class AppController {
 
     return this.userMediaService.setSeenStatus({ email: decodedToken.email, mediaId: mediaId, seenStatus: seenStatus }).pipe(
       catchError((error) => {
-        // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error setting media seen status: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
       })
     );
@@ -321,7 +316,6 @@ export class AppController {
 
     return this.userMediaService.deleteMediaFromUser({ email: decodedToken.email, mediaId: mediaId }).pipe(
       catchError((error) => {
-        // Devuelve una respuesta HTTP adecuada
         throw new HttpException(`Error deleting media: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
       })
     );

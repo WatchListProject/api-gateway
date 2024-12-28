@@ -18,7 +18,7 @@ const USER_MEDIA_SERVICE_URL = process.env.USER_MEDIA_SERVICE_URL;
           package: 'user',
           protoPath: join(__dirname, '../../node_modules/protos/user_media_service.proto'),
           url: USER_MEDIA_SERVICE_URL,
-           //credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP, quitar para local
+          credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP, quitar para local
         },
       },
     ]),

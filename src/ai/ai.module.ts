@@ -17,7 +17,7 @@ const AI_SERVICE_URL = process.env.AI_SERVICE_URL;
         package: 'ai',
         protoPath: join(__dirname, '../../node_modules/protos/ai_service.proto'),
         url: AI_SERVICE_URL,
-        //credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP, quitar para local
+        credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP, quitar para local
       },
     },
   ]),],

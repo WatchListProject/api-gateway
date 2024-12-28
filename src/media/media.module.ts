@@ -18,7 +18,7 @@ const MEDIA_SERVICE_URL = process.env.MEDIA_SERVICE_URL;
           package: 'media',
           protoPath: join(__dirname, '../../node_modules/protos/media_search_engine.proto'),
           url: MEDIA_SERVICE_URL,
-          ///credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP/ Docker, quitar para local
+          credentials: grpc.credentials.createSsl(),  // Añadir soporte TLS para GCP/ Docker, quitar para local
         },
       },
     ]),
