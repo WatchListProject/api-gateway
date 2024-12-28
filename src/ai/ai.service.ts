@@ -8,7 +8,6 @@ export class AiService implements AIServiceController {
     private aiService: AIServiceClient;
     constructor(@Inject('AI_PACKAGE') private client: ClientGrpc) { }
     mediaRecommendation(request: MediaRecommendationRequest): Observable<MediaRecommendationResponse> {
-        console.log(request);
         return this.aiService.mediaRecommendation(request);
     }
 

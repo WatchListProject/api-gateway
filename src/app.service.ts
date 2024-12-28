@@ -88,10 +88,7 @@ export class AppService {
           title: media.title,
           mediaType: media.mediaType,
         }));
-        return this.aiService.mediaRecommendation({ mediaList: mediaListForAI }).pipe(
-          tap((recommendations) => console.log(recommendations.recommendation)) // Aquí te suscribes temporalmente para ver los datos
-          
-        );
+        return this.aiService.mediaRecommendation({ mediaList: mediaListForAI });
       }),
       catchError((error) => {
         throw new HttpException(
