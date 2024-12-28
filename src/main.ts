@@ -5,30 +5,31 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 dotenv.config();
+const API_GATEWAY_PORT = process.env.API_GATEWAY_PORT;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: '*', // Puedes especificar orígenes permitidos aquí
+    origin: '*', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Accept, Authorization',
   });
 
 
-  // Configuración de Swagger
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('API Gateway')
     .setDescription('API Gateway for microservices')
     .setVersion('1.0')
-    .addBearerAuth() // Si usas autenticación por JWT
+    .addBearerAuth() 
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/docs', app, document);
 
-  app.useGlobalPipes(new ValidationPipe()); // Usar ValidationPipe globalmente
+  app.useGlobalPipes(new ValidationPipe());
 
 
-  await app.listen(3001);
+  await app.listen(API_GATEWAY_PORT);
 }
 bootstrap();
